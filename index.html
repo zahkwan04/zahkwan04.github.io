@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zahier Zakwan · Software verification engineer for avionics</title>
+<meta name="description" content="Zahier Zakwan verifies avionics software for a maritime patrol aircraft in Italy. Previously validated Ethernet and TSN silicon at Intel.">
+<meta property="og:title" content="Zahier Zakwan · I test the software that flies">
+<meta property="og:description" content="Avionics V&V under DO-178C and DO-330. Ethernet/TSN validation. Python automation that cut test cycles by 80%.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230b63ce%22/><text x=%2250%22 y=%2272%22 font-size=%2262%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22>Z</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef4f8;--panel:#fff;--ink:#14202b;--mute:#4a5b6b;--acc:#0b63ce;--acc-ink:#fff;--pass:#0f7a53;--line:#cfdbe5;--soft:#e0ebf5}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1620;--panel:#142030;--ink:#e6edf3;--mute:#9fb0c0;--acc:#6cb0ff;--acc-ink:#0e1620;--pass:#4cc38a;--line:#27384a;--soft:#1a2b3e}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1.05rem;line-height:1.65}
+a{color:var(--acc);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--acc);color:var(--acc-ink);padding:8px 14px;border-radius:8px;z-index:20}
+.skip:focus{left:8px}
+.wrap{max-width:1040px;margin:auto;padding:0 22px}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:18px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.brand{font-weight:700;text-decoration:none;color:var(--ink);margin-right:auto}
+nav a{color:var(--mute);text-decoration:none;font-weight:500;margin-left:16px}
+nav a:hover{color:var(--acc)}
+h1{font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.08;margin:0 0 20px;letter-spacing:-.02em;font-weight:700}
+h2{font-size:clamp(1.6rem,3.5vw,2.1rem);margin:0 0 8px;letter-spacing:-.01em}
+h3{margin:0 0 4px;font-size:1.15rem}
+section{padding:64px 0 8px}
+.lede{color:var(--mute);font-size:1.15rem;max-width:34em;margin:0 0 26px}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:56px 0 24px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:11px 22px;border-radius:12px;font-weight:600;text-decoration:none;border:2px solid var(--acc);background:var(--acc);color:var(--acc-ink)}
+.btn.o{background:transparent;color:var(--acc)}
+.btn:hover{filter:brightness(1.1)}
+.report{background:var(--panel);border:2px solid var(--ink);border-radius:16px;box-shadow:8px 8px 0 var(--acc);overflow:hidden}
+.report .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 18px;border-bottom:2px solid var(--ink);font-weight:600;background:var(--soft)}
+.report ul{list-style:none;margin:0;padding:6px 18px}
+.report li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);font-size:.97rem}
+.report li:last-child{border:0}
+.st{flex:none;min-width:64px;text-align:center;font-size:.8rem;font-weight:700;padding:2px 8px;border-radius:99px;border:2px solid var(--line);color:var(--mute)}
+li.ok .st{border-color:var(--pass);color:var(--pass)}
+li.ok .st::before{content:"✓ "}
+.report .ft{padding:12px 18px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.report button{font:inherit;font-weight:600;background:none;border:2px solid var(--ink);color:var(--ink);border-radius:10px;padding:5px 14px;cursor:pointer}
+.report button:hover{background:var(--soft)}
+.facts{display:flex;gap:28px;flex-wrap:wrap;margin:34px 0 0;padding:0;list-style:none}
+.facts b{display:block;font-size:2rem;line-height:1.1;color:var(--acc)}
+.facts span{color:var(--mute);font-size:.92rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:22px}
+.card{transition:transform .15s;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card p{margin:6px 0 0;color:var(--mute)}
+.tag{display:inline-block;background:var(--soft);padding:1px 10px;border-radius:99px;font-size:.82rem;font-weight:500;margin:10px 6px 0 0}
+.tlw{position:relative;margin-top:22px;padding-left:54px}
+.track{position:absolute;left:17px;top:0;bottom:0;width:4px;background:var(--line);border-radius:4px}
+.fill{position:absolute;left:0;top:0;width:100%;height:var(--p,0%);background:var(--acc);border-radius:4px}
+.plane{position:absolute;left:-12px;top:var(--p,0%);width:28px;height:28px;transform:translateY(-50%) rotate(180deg);color:var(--acc);background:var(--bg);border-radius:50%;padding:2px;z-index:2}
+.tl{list-style:none;margin:0;padding:0}
+.tl>li{position:relative;margin-bottom:30px}
+.tl>li::before{content:"";position:absolute;left:-43px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--line);transition:background .3s,border-color .3s}
+.tl>li.on::before{background:var(--acc);border-color:var(--acc)}
+.bar{position:absolute;left:0;bottom:-1px;height:3px;width:100%;background:var(--acc);transform:scaleX(0);transform-origin:left}
+.tl .when{color:var(--mute);font-size:.92rem;font-weight:500}
+.tl ul{margin:8px 0 0;padding-left:20px;color:var(--mute)}
+.tl ul li{margin:4px 0}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:10px 22px;margin:22px 0 0}
+dt{font-weight:600}dd{margin:0;color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.contact{background:var(--ink);color:var(--bg);border-radius:22px;padding:40px;margin-top:64px;text-align:left}
+.contact h2{color:var(--bg)}.contact p{max-width:32em}
+.contact .btn{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.contact .btn.o{background:transparent;color:var(--bg)}
+.contact :focus-visible{outline-color:var(--bg)}
+footer{padding:36px 0 50px;color:var(--mute);font-size:.92rem}
+@media(max-width:800px){.hero,.two{grid-template-columns:1fr}nav a{margin-left:0;margin-right:14px}.contact{padding:26px}}
+
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.strip{overflow:hidden;white-space:nowrap;border-block:1px solid var(--line);padding:12px 0;margin-top:44px;font-size:clamp(1.7rem,4.5vw,3rem);font-weight:700;letter-spacing:-.01em;color:var(--line)}
+.strip span{display:inline-block;will-change:transform}
+#journey{padding:0;height:480vh;position:relative}
+.stick{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px;align-items:center;padding-top:64px}
+#cv{width:100%;height:min(72vh,660px);display:block;touch-action:pan-y}
+.caps{position:relative;min-height:16em}
+.cap{position:absolute;left:0;right:0;top:0;opacity:0;transform:translateY(16px);transition:opacity .45s,transform .45s;pointer-events:none}
+.cap.on{opacity:1;transform:none;pointer-events:auto}
+.cap h3{font-size:clamp(2.4rem,5.5vw,4rem);line-height:1.05;margin:0 0 12px;letter-spacing:-.02em}
+.cap p{color:var(--mute);font-size:1.15rem;max-width:25em;margin:0 0 14px}
+.dots{display:flex;gap:12px;margin-top:6px}
+.dots button{width:16px;height:16px;border-radius:50%;border:2px solid var(--acc);background:none;padding:0;cursor:pointer}
+.dots button[aria-current=true]{background:var(--acc)}
+.hint{color:var(--mute);font-size:.92rem;margin:14px 0 0}
+#journey.still{height:auto;padding:40px 0}
+.still .stick{position:static;height:auto}
+.still .caps{min-height:0}
+.still .cap{position:static;opacity:1;transform:none;margin-bottom:26px}
+.still .dots,.still .hint{display:none}
+@media(max-width:800px){.stick{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:center;gap:0}#cv{order:-1;height:40vh}.cap h3{font-size:2.1rem}.cap p{font-size:1.02rem}.caps{min-height:14em}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="bar" id="bar" aria-hidden="true"></div><div class="wrap">
+<a class="brand" href="#top">Zahier Zakwan</a>
+<nav aria-label="Primary"><a href="#journey">Journey</a><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a></nav>
+</div></header>
+
+<main id="main"><div class="wrap" id="top">
+<div class="hero">
+<div>
+<h1>I test the software that flies.</h1>
+<p class="lede">I'm Zahier, a verification and validation engineer. Today I help prove avionics software is ready for a maritime patrol aircraft, working with the team at Leonardo in Italy. Before that I spent three years making Intel's Ethernet chips prove themselves.</p>
+<div class="btns"><a class="btn" href="#contact">Say hello</a><a class="btn o" href="https://github.com/zahkwan04" rel="noopener">See my GitHub</a></div>
+<ul class="facts">
+<li><b data-to="80" data-s="%">80%</b><span>shorter test cycles with my Python automation</span></li>
+<li><b data-to="5" data-s="">5</b><span>languages, including Italian and German</span></li>
+<li><b data-to="4" data-s="">4</b><span>operating systems validated in one project</span></li>
+</ul>
+</div>
+
+<div class="report" aria-labelledby="rt">
+<div class="hd"><span id="rt">Verification run: Zahier Zakwan</span><span id="count" aria-hidden="true">0/5</span></div>
+<ul id="checks">
+<li><span class="st">Pending</span><span>Requirements trace to tests (DO-178C)</span></li>
+<li><span class="st">Pending</span><span>Code coverage tool qualified, 14 test scripts (DO-330)</span></li>
+<li><span class="st">Pending</span><span>Ethernet drivers validated on Zephyr, Windows, Yocto and Ubuntu</span></li>
+<li><span class="st">Pending</span><span>Test cycle time cut by 80% through automation</span></li>
+<li><span class="st">Pending</span><span>Defect resolution 60% faster with cross-team work</span></li>
+</ul>
+<div class="ft"><span id="sum" role="status">Running checks…</span><button id="rerun" type="button">Run again</button></div>
+</div>
+</div>
+
+<div class="strip" aria-hidden="true"><span id="mq">DO-178C &nbsp;&#9670;&nbsp; Ethernet &nbsp;&#9670;&nbsp; TSN &nbsp;&#9670;&nbsp; DO-330 &nbsp;&#9670;&nbsp; Python &nbsp;&#9670;&nbsp; Avionics &nbsp;&#9670;&nbsp; Zephyr &nbsp;&#9670;&nbsp; Qt &nbsp;&#9670;&nbsp; TETRA &nbsp;&#9670;&nbsp; Yocto &nbsp;&#9670;&nbsp; DO-254 &nbsp;&#9670;&nbsp; RTP/RTSP &nbsp;&#9670;&nbsp; Linux &nbsp;&#9670;&nbsp; C++ &nbsp;&#9670;&nbsp; DO-178C &nbsp;&#9670;&nbsp; Ethernet &nbsp;&#9670;&nbsp; TSN &nbsp;&#9670;&nbsp; DO-330 &nbsp;&#9670;&nbsp; Python</span></div>
+<section id="journey" aria-labelledby="jt"><h2 class="vh" id="jt">From silicon to sky</h2>
+<div class="stick"><div class="left"><div class="caps">
+<div class="cap on"><h3>Silicon</h3><p>It starts at the chip. At Intel I validated Ethernet and TSN across four product families, making sure every packet arrives on time.</p></div>
+<div class="cap"><h3>Network</h3><p>Then the network. Drivers on Zephyr, Windows, Yocto and Ubuntu, and TETRA radios for a government emergency network.</p></div>
+<div class="cap"><h3>Aircraft</h3><p>Now the sky. Verifying avionics software for a maritime patrol aircraft with Leonardo in Italy.</p></div>
+<div class="cap"><h3>Verified</h3><p>Same job at every altitude: prove it works before anyone depends on it.</p><p><a class="btn" href="#contact">Let's talk</a></p></div>
+</div>
+<div class="dots" role="group" aria-label="Jump to stage"><button type="button" aria-label="Silicon"></button><button type="button" aria-label="Network"></button><button type="button" aria-label="Aircraft"></button><button type="button" aria-label="Verified"></button></div>
+<p class="hint">Keep scrolling. The shape changes with you, and it reacts to your cursor.</p></div>
+<canvas id="cv" aria-hidden="true"></canvas></div></section>
+<section id="work" aria-labelledby="wt">
+<h2 id="wt">Selected work</h2>
+<p class="lede">A few things I'm proud of, from aircraft software to network silicon.</p>
+<div class="cards">
+<article class="card"><h3>Qualifying a certification tool</h3><p>Wrote about 14 qualification test scripts for a code coverage tool under DO-330, so it could be trusted in the software verification process.</p><span class="tag">DO-330</span><span class="tag">Test scripts</span></article>
+<article class="card"><h3>Live video for LIMA 2025</h3><p>Built a media bridge that converts RTP streams to RTSP, feeding real-time AI biometric and threat detection at the showcase.</p><span class="tag">RTP/RTSP</span><span class="tag">Python</span></article>
+<article class="card"><h3>Test automation that paid for itself</h3><p>Python-based automation across Windows and Linux cut test cycle times by 80% for Intel's Ethernet validation team.</p><span class="tag">Python</span><span class="tag">Ethernet</span></article>
+<article class="card"><h3>Radio network confidence</h3><p>Validated the stability of TETRA infrastructure through systematic integration testing for Malaysia's Government Integrated Radio Network.</p><span class="tag">TETRA</span><span class="tag">Integration testing</span></article>
+</div>
+</section>
+
+<section id="experience" aria-labelledby="et">
+<h2 id="et">Experience</h2>
+<div class="tlw" id="tlw"><div class="track" aria-hidden="true"><div class="fill"></div><div class="plane"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg></div></div><ol class="tl">
+<li><h3>Software V&V engineer, Jack and Frank</h3><div class="when">June 2026 to now · Assigned to Leonardo, Italy</div>
+<ul><li>Verifying avionics software under DO-178C and DO-330 processes.</li><li>Trained in DO-254 design assurance for airborne electronic hardware.</li></ul></li>
+<li><h3>Software development and validation engineer, Sapura Research</h3><div class="when">Feb 2025 to May 2026 · Seconded to Leonardo, Italy from June 2025</div>
+<ul><li>Wrote and ran avionics validation scripts for the Malaysia ATR72 MPA program.</li><li>Built the RTP to RTSP media bridge and validated TETRA infrastructure for GIRN.</li></ul></li>
+<li><h3>Software validation engineer, Intel</h3><div class="when">Oct 2022 to Nov 2024 · Penang, Malaysia</div>
+<ul><li>Led Gigabit Ethernet and TSN validation across Elkhart Lake, Alder Lake, Raptor Lake and Bartlett Lake products.</li><li>Cut defect resolution time by 60% working with cross-functional teams.</li></ul></li>
+<li><h3>Graduate trainee, Intel</h3><div class="when">Sep 2021 to Sep 2022</div>
+<ul><li>Ran 300+ test cases and improved test automation efficiency by 40%.</li></ul></li>
+</ol></div>
+</section>
+
+<section id="skills" aria-labelledby="st">
+<h2 id="st">Skills and background</h2>
+<div class="two">
+<dl>
+<dt>Code</dt><dd>C/C++, C#, Python, Java, SQL, Qt, .NET, WPF</dd>
+<dt>Verification</dt><dd>Test automation, test case design, integration testing, defect analysis, requirements traceability</dd>
+<dt>Networking</dt><dd>Ethernet, TSN, TCP/IP, RTP/RTSP, TETRA</dd>
+<dt>Systems</dt><dd>Linux Ubuntu, Yocto, Windows, Zephyr RTOS</dd>
+<dt>Aerospace</dt><dd>DO-178C, DO-330, DO-254 (trained)</dd>
+<dt>Tools</dt><dd>Git, Wireshark, Spirent TestCenter, VS Code</dd>
+</dl>
+<dl>
+<dt>Languages</dt><dd>Bahasa Malaysia, English, Italian, German, Mandarin</dd>
+<dt>Certified</dt><dd>ISTQB Foundation Level (2023)</dd>
+<dt>Quality</dt><dd>Intel SW Quality Yellow Belt (2023) and White Belt (2022)</dd>
+<dt>Licensed</dt><dd>Graduate Engineer, Board of Engineers Malaysia</dd>
+<dt>Education</dt><dd>BEng Computer Engineering, Universiti Teknologi PETRONAS (2021)</dd>
+</dl>
+</div>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="ct">
+<h2 id="ct">Curious about something?</h2>
+<p>Ask me how you verify software that can't fail, how TSN keeps networks on time, or what it's like working in Italian and English every day. I reply to every message.</p>
+<div class="btns"><a class="btn" href="mailto:mzaza.utp@gmail.com">mzaza.utp@gmail.com</a><a class="btn o" href="https://www.linkedin.com/in/zahierarbaai04" rel="noopener">LinkedIn</a><a class="btn o" href="https://github.com/zahkwan04" rel="noopener">GitHub</a></div>
+</section>
+</div></main>
+<footer><div class="wrap">© 2026 Muhammad Zahier Zakwan bin Mohd Arbaai · Selangor, Malaysia · Working in Italy</div></footer>
+
+<script>
+(function(){
+ const items=[...document.querySelectorAll("#checks li")],count=document.getElementById("count"),sum=document.getElementById("sum"),btn=document.getElementById("rerun");
+ const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ let timers=[];
+ function run(){
+  timers.forEach(clearTimeout);timers=[];
+  items.forEach(li=>{li.classList.remove("ok");li.firstChild.textContent="Pending"});
+  count.textContent="0/5";sum.textContent="Running checks…";
+  items.forEach((li,i)=>{
+   timers.push(setTimeout(()=>{li.classList.add("ok");li.firstChild.textContent="Pass";count.textContent=(i+1)+"/5";
+    if(i===items.length-1)sum.textContent="All 5 checks passed."},still?0:500+i*650));
+  });
+ }
+ btn.addEventListener("click",run);
+ run();
+})();
+
+(function(){
+ const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ const root=document.getElementById("tlw"),bar=document.getElementById("bar"),lis=[...root.querySelectorAll(".tl>li")];
+ let tick=false;
+ function update(){
+  tick=false;
+  const r=root.getBoundingClientRect(),h=r.height;
+  const p=still?1:Math.min(1,Math.max(0,(innerHeight*0.6-r.top)/h));
+  root.style.setProperty("--p",(p*100)+"%");
+  lis.forEach(li=>li.classList.toggle("on",li.offsetTop+10<=p*h||still));
+  const max=document.documentElement.scrollHeight-innerHeight;
+  if(!still)bar.style.transform="scaleX("+(max>0?scrollY/max:0)+")";
+ }
+ addEventListener("scroll",()=>{if(!tick){tick=true;requestAnimationFrame(update)}},{passive:true});
+ addEventListener("resize",update);update();
+ if(!still&&"IntersectionObserver"in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+   if(!e.isIntersecting)return;io.unobserve(e.target);
+   const el=e.target,to=+el.dataset.to,s=el.dataset.s,t0=performance.now(),d=1200;
+   (function f(t){const k=Math.min(1,(t-t0)/d),v=Math.round(to*(1-Math.pow(1-k,3)));el.textContent=v+s;if(k<1)requestAnimationFrame(f)})(t0);
+  }),{threshold:.6});
+  document.querySelectorAll("[data-to]").forEach(el=>{el.textContent="0"+el.dataset.s;io.observe(el)});
+ }
+})();
+
+(function(){
+ const cv=document.getElementById("cv"),ctx=cv.getContext("2d"),sec=document.getElementById("journey"),mq=document.getElementById("mq");
+ const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ if(still)sec.classList.add("still");
+ const caps=[...sec.querySelectorAll(".cap")],dots=[...sec.querySelectorAll(".dots button")];
+ const N=still?2000:4500,S=240,off=document.createElement("canvas");off.width=off.height=S;
+ const o=off.getContext("2d",{willReadFrequently:true});
+ const PLANE="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z";
+ function sample(draw){
+  o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,S,S);o.fillStyle=o.strokeStyle="#000";o.lineCap=o.lineJoin="round";
+  draw(o);
+  const d=o.getImageData(0,0,S,S).data,p=[];
+  for(let y=0;y<S;y++)for(let x=0;x<S;x++)if(d[(y*S+x)*4+3]>128)p.push(x,y);
+  const m=p.length/2,a=new Float32Array(N*2);
+  for(let i=0;i<N;i++){const j=(Math.random()*m|0)*2;a[i*2]=p[j]/S-.5;a[i*2+1]=p[j+1]/S-.5}
+  return a;
+ }
+ const line=(a,b,c,d)=>{o.beginPath();o.moveTo(a,b);o.lineTo(c,d);o.stroke()};
+ const shapes=[
+  ()=>{o.lineWidth=10;o.strokeRect(70,70,100,100);o.lineWidth=6;o.strokeRect(96,96,48,48);o.lineWidth=8;
+   for(let i=0;i<4;i++){const p=88+i*21.3;line(p,36,p,66);line(p,174,p,204);line(36,p,66,p);line(174,p,204,p)}},
+  ()=>{const n=[[40,60],[120,30],[200,70],[70,130],[160,140],[120,200],[40,190],[205,195]],
+   e=[[0,1],[1,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,5],[4,5],[3,6],[5,6],[4,7],[5,7],[2,7]];
+   o.lineWidth=5;e.forEach(q=>line(n[q[0]][0],n[q[0]][1],n[q[1]][0],n[q[1]][1]));
+   n.forEach(p=>{o.beginPath();o.arc(p[0],p[1],14,0,7);o.fill()})},
+  ()=>{o.translate(120,120);o.rotate(Math.PI/4);o.scale(8.6,8.6);o.translate(-12,-12);o.fill(new Path2D(PLANE))},
+  ()=>{o.lineWidth=12;o.beginPath();o.arc(120,120,95,0,7);o.stroke();o.lineWidth=20;
+   o.beginPath();o.moveTo(70,125);o.lineTo(105,160);o.lineTo(172,84);o.stroke()}
+ ].map(f=>sample(f));
+ const rx=new Float32Array(N),ry=new Float32Array(N),dl=new Float32Array(N),ph=new Float32Array(N);
+ for(let i=0;i<N;i++){rx[i]=Math.random()*2-1;ry[i]=Math.random()*2-1;dl[i]=Math.random();ph[i]=Math.random()*6.28}
+ let acc=[11,99,206],pass=[15,122,83];
+ const hex=h=>{h=h.trim().replace("#","");return [0,2,4].map(i=>parseInt(h.substr(i,2),16))};
+ function colors(){const cs=getComputedStyle(document.documentElement);acc=hex(cs.getPropertyValue("--acc"));pass=hex(cs.getPropertyValue("--pass"))}
+ colors();matchMedia("(prefers-color-scheme:dark)").addEventListener("change",colors);
+ let W=0,H=0,dpr=1,mx=-9999,my=-9999,cur=still?2:0,vis=true;
+ function size(){dpr=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);if(still)draw(0)}
+ new ResizeObserver(size).observe(cv);size();
+ cv.addEventListener("pointermove",e=>{const r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+ cv.addEventListener("pointerleave",()=>{mx=my=-9999});
+ const sm=t=>t*t*(3-2*t),cl=(v,a,b)=>Math.min(b,Math.max(a,v));
+ function draw(t){
+  ctx.clearRect(0,0,W,H);
+  const k=Math.min(2,Math.floor(cur)),loc=cur-k,f=sm(cl((loc-.28)/.44,0,1)),A=shapes[k],B=shapes[Math.min(3,k+1)];
+  const sc=Math.min(W,H)*.95,cx=W/2,cy=H/2,w=cl(cur-2,0,1);
+  const c=[0,1,2].map(i=>Math.round(acc[i]+(pass[i]-acc[i])*w));
+  ctx.fillStyle="rgb("+c[0]+","+c[1]+","+c[2]+")";ctx.globalAlpha=.9;
+  const R=70,sz=2.1;
+  for(let i=0;i<N;i++){
+   const e=sm(cl((f-dl[i]*.4)/.6,0,1)),sw=Math.sin(Math.PI*e)*.4;
+   let x=A[i*2]+(B[i*2]-A[i*2])*e+rx[i]*sw+Math.sin(t*.0011+ph[i])*.004;
+   let y=A[i*2+1]+(B[i*2+1]-A[i*2+1])*e+ry[i]*sw+Math.cos(t*.0013+ph[i])*.004;
+   x=cx+x*sc;y=cy+y*sc;
+   const dx=x-mx,dy=y-my,d2=dx*dx+dy*dy;
+   if(d2<R*R){const d=Math.sqrt(d2)||1,p=(1-d/R)*38;x+=dx/d*p;y+=dy/d*p}
+   ctx.fillRect(x,y,sz,sz);
+  }
+  ctx.globalAlpha=1;
+ }
+ function target(){const r=sec.getBoundingClientRect(),tot=r.height-innerHeight;return cl(-r.top/tot,0,1)*3}
+ let last=-1;
+ function frame(t){
+  if(vis){cur+=(target()-cur)*.1;draw(t);
+   const idx=Math.round(cur);if(idx!==last){last=idx;caps.forEach((c,i)=>c.classList.toggle("on",i===idx));dots.forEach((d,i)=>d.setAttribute("aria-current",i===idx))}
+   mq.style.transform="translateX("+(-scrollY*.45+200)+"px)";}
+  requestAnimationFrame(frame);
+ }
+ if(!still){new IntersectionObserver(e=>{vis=e[0].isIntersecting||sec.getBoundingClientRect().bottom>-200},{rootMargin:"200px"}).observe(sec);requestAnimationFrame(frame)}
+ dots.forEach((d,i)=>d.addEventListener("click",()=>{const top=sec.getBoundingClientRect().top+scrollY,tot=sec.offsetHeight-innerHeight;scrollTo({top:top+i/3*tot+2,behavior:"smooth"})}));
+ if(!still)document.querySelectorAll(".card").forEach(c=>{
+  c.addEventListener("pointermove",e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform="perspective(700px) rotateX("+(-y*8)+"deg) rotateY("+(x*8)+"deg)"});
+  c.addEventListener("pointerleave",()=>{c.style.transform=""})});
+})();
+</script>
+</body>
+</html>
